@@ -1,0 +1,32 @@
+{
+  "name": "odin-messaging-api",
+  "version": "1.0.0",
+  "description": "Odin messaging api",
+  "homepage": "https://github.com/inspflof/odin-messaging-api#readme",
+  "bugs": {
+    "url": "https://github.com/inspflof/odin-messaging-api/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inspflof/odin-messaging-api.git"
+  },
+  "license": "MIT",
+  "author": "",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.0.0",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3"
+  }
+}
