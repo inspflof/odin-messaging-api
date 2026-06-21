@@ -5,3 +5,7 @@ export type CreateConversationBody = {
     type: ConversationType;
     userIds: string[];
 }
+
+export type GetByIdConversationParams = {
+    conversationId: string;
+}

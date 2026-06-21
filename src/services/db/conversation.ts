@@ -15,6 +15,19 @@ export const conversationQueries = {
         })
     },
 
+    async getById(id: string) {
+        return await prisma.conversation.findUnique({
+            where: { id },
+            include: {
+                users: {
+                    include: {
+                        user: true
+                    }
+                }
+            }
+        })
+    },
+
     async create(type: ConversationType = "DIRECT", name: string | null = null, userIds: string[]) {
         return await prisma.$transaction(async (tx) => {
             const conversation = await tx.conversation.create({
