@@ -21,3 +21,11 @@ export type AddUserConversationParams = {
 export type AddUserConversationBody = {
     userIds: string[];
 }
+
+export type RemoveUserConversationParams = {
+    conversationId: string;
+}
+
+export type RemoveUserConversationBody = {
+    userIds: string[];
+}

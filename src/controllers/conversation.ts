@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import type { AddUserConversationBody, AddUserConversationParams, CreateConversationBody, GetByIdConversationParams, GetUserConversationParams } from "./conversation.type.js";
+import type { AddUserConversationBody, AddUserConversationParams, CreateConversationBody, GetByIdConversationParams, GetUserConversationParams, RemoveUserConversationBody, RemoveUserConversationParams } from "./conversation.type.js";
 
 import { conversationQueries } from "../services/db/conversation.js";
 
@@ -75,6 +75,26 @@ export const conversationController = {
             }
 
             const data = await conversationQueries.addUsers(userIds, conversationId)
+            return res.status(200).json(data)
+        } catch (err) {
+            return next(err)
+        }
+    }, 
+
+    async removeUsers(req: Request<RemoveUserConversationParams, {}, RemoveUserConversationBody>, res: Response, next: NextFunction) {
+        try {
+            const { conversationId } = req.params
+            const rawUserIds = req.body.userIds
+
+            const userIds = Array.isArray(rawUserIds)
+                ? rawUserIds
+                : JSON.parse(rawUserIds)
+
+            if(!conversationId || !userIds) {
+                return res.status(400).json({ message: "Missing fields" })
+            }
+
+            const data = await conversationQueries.removeUsers(userIds, conversationId)
             return res.status(200).json(data)
         } catch (err) {
             return next(err)

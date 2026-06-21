@@ -57,11 +57,13 @@ export const conversationQueries = {
         })
     },
 
-    async removeUser(userId: string, conversationId: string) {
+    async removeUsers(userIds: string[], conversationId: string) {
         return await prisma.conversationUser.deleteMany({
             where: {
-                userId,
-                conversationId
+                conversationId,
+                userId: {
+                    in: userIds
+                }
             }
         })
     },
