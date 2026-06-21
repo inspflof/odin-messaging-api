@@ -5,7 +5,7 @@ import { conversationQueries } from "../services/db/conversation.js";
 
 
 export const conversationController = {
-    async getAll(req: Request, res: Response, next: NextFunction) {
+    async getAll(_req: Request, res: Response, next: NextFunction) {
         try {
             const data = await conversationQueries.getAll()
             return res.status(200).json(data)
