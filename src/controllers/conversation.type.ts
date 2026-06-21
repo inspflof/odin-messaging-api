@@ -13,3 +13,11 @@ export type GetByIdConversationParams = {
 export type GetUserConversationParams = {
     conversationId: string;
 }
+
+export type AddUserConversationParams = {
+    conversationId: string;
+}
+
+export type AddUserConversationBody = {
+    userIds: string[];
+}

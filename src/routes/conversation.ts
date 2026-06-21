@@ -9,7 +9,7 @@ router.get(CONVERSATION_PATHS.GET_BY_ID, conversationController.getById)
 router.get(CONVERSATION_PATHS.GET_USERS, conversationController.getUsers)
 
 router.post(CONVERSATION_PATHS.CREATE, conversationController.create)
-
+router.post(CONVERSATION_PATHS.ADD_USERS, conversationController.addUsers)
 
 
 export default router
