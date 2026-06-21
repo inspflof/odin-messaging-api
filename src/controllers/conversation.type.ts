@@ -1,0 +1,7 @@
+import type { ConversationType } from "../generated/prisma/enums.js";
+
+export type CreateConversationBody = {
+    name?: string;
+    type: ConversationType;
+    userIds: string[];
+}

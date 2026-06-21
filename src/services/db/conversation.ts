@@ -4,15 +4,33 @@ import { ConversationType } from "../../generated/prisma/enums.js";
 
 export const conversationQueries = {
     async getAll() {
-        return prisma.conversation.findMany()
+        return prisma.conversation.findMany({
+            include: {
+                users: {
+                    include: {
+                        user: true
+                    }
+                }
+            }
+        })
     },
 
-    async create(type: ConversationType, name: string | null = null) {
-        return prisma.conversation.create({
-            data: {
-                type,
-                name
-            }
+    async create(type: ConversationType = "DIRECT", name: string | null = null, userIds: string[]) {
+        return await prisma.$transaction(async (tx) => {
+            const conversation = await tx.conversation.create({
+                data : {
+                    type,
+                    name
+                }
+            })
+            await tx.conversationUser.createMany({
+                data: userIds.map(userId => ({
+                    userId,
+                    conversationId: conversation.id
+                }))
+            })
+
+            return conversation
         })
     },
 
