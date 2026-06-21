@@ -9,3 +9,7 @@ export type CreateConversationBody = {
 export type GetByIdConversationParams = {
     conversationId: string;
 }
+
+export type GetUserConversationParams = {
+    conversationId: string;
+}

@@ -4,7 +4,7 @@ import { ConversationType } from "../../generated/prisma/enums.js";
 
 export const conversationQueries = {
     async getAll() {
-        return prisma.conversation.findMany({
+        return await prisma.conversation.findMany({
             include: {
                 users: {
                     include: {
@@ -48,7 +48,7 @@ export const conversationQueries = {
     },
 
     async addUsers(userIds: string[], conversationId: string) {
-        return prisma.conversationUser.createMany({
+        return await prisma.conversationUser.createMany({
             data: userIds.map(userId => ({
                 conversationId,
                 userId
@@ -58,11 +58,26 @@ export const conversationQueries = {
     },
 
     async removeUser(userId: string, conversationId: string) {
-        return prisma.conversationUser.deleteMany({
+        return await prisma.conversationUser.deleteMany({
             where: {
                 userId,
                 conversationId
             }
         })
+    },
+
+    async getUsers(conversationId: string) {
+        const conversation = await prisma.conversation.findUnique({
+            where: { id: conversationId},
+            select: {
+                users: {
+                    select: {
+                        user: true
+                    }
+                }
+            }
+        })
+
+        return conversation?.users.map(({ user }) => user)
     }
 }
