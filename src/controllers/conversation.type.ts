@@ -29,3 +29,16 @@ export type RemoveUserConversationParams = {
 export type RemoveUserConversationBody = {
     userIds: string[];
 }
+
+export type GetMessagesConversationParams = {
+    conversationId: string;
+}
+
+export type CreateMessagesConversationParams = {
+    conversationId: string;
+}
+
+export type CreateMessagesConversationBody = {
+    contents: string[];
+    userId: string;
+}

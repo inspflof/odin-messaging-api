@@ -81,5 +81,21 @@ export const conversationQueries = {
         })
 
         return conversation?.users.map(({ user }) => user)
+    },
+
+    async getMessages(conversationId: string) {
+        return await prisma.message.findMany({
+            where: { conversationId }
+        })
+    },
+
+    async createMessages(conversationId: string, userId: string, contents: string[]) {
+        return await prisma.message.createMany({
+            data: contents.map(content => ({
+                conversationId,
+                userId, 
+                content
+            }))
+        })
     }
 }
