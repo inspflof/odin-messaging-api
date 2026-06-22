@@ -12,9 +12,13 @@ export const CONVERSATION_PATHS = {
     GET_ALL: "/",
     CREATE: "/",
     GET_BY_ID: "/:conversationId",
-    GET_USERS: "/:conversationId/user",
-    ADD_USERS: "/:conversationId/user",
-    REMOVE_USERS: "/:conversationId/user",
-    GET_MESSAGES: "/:conversationId/message",
-    CREATE_MESSAGES: "/:conversationId/message"
+    USERS: {
+        GET: "/:conversationId/user",
+        ADD: "/:conversationId/user",
+        REMOVE: "/:conversationId/user",
+    },
+    MESSAGES: {
+        GET: "/:conversationId/message",
+        CREATE: "/:conversationId/message"
+    }
 }

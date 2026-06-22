@@ -6,14 +6,14 @@ import { conversationController } from "../controllers/conversation.js";
 
 router.get(CONVERSATION_PATHS.GET_ALL, conversationController.getAll)
 router.get(CONVERSATION_PATHS.GET_BY_ID, conversationController.getById)
-router.get(CONVERSATION_PATHS.GET_USERS, conversationController.getUsers)
-router.get(CONVERSATION_PATHS.GET_MESSAGES, conversationController.getMessages)
+router.get(CONVERSATION_PATHS.USERS.GET, conversationController.getUsers)
+router.get(CONVERSATION_PATHS.MESSAGES.GET, conversationController.getMessages)
 
 router.post(CONVERSATION_PATHS.CREATE, conversationController.create)
-router.post(CONVERSATION_PATHS.ADD_USERS, conversationController.addUsers)
-router.post(CONVERSATION_PATHS.CREATE_MESSAGES, conversationController.createMessages)
+router.post(CONVERSATION_PATHS.USERS.ADD, conversationController.addUsers)
+router.post(CONVERSATION_PATHS.MESSAGES.CREATE, conversationController.createMessages)
 
-router.delete(CONVERSATION_PATHS.REMOVE_USERS, conversationController.removeUsers)
+router.delete(CONVERSATION_PATHS.USERS.REMOVE, conversationController.removeUsers)
 
 
 export default router
