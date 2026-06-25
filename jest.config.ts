@@ -26,6 +26,11 @@ const config: Config = {
       },
     ],
   },
+
+  collectCoverageFrom: [
+    "!src/**/generated/**",
+    "!src/**/*.mock.ts"
+  ]
 };
 
 export default config;
