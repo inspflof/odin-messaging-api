@@ -4,15 +4,30 @@ import { ConversationType } from "../../generated/prisma/enums.js";
 
 export const conversationQueries = {
     async getAll(ctx: Context) {
-        return await ctx.prisma.conversation.findMany({
-            include: {
+        const conversations = await ctx.prisma.conversation.findMany({
+            select: {
+                id: true,
+                createdAt: true,
+                updatedAt: true,
+                name: true,
+                type: true,
                 users: {
-                    include: {
-                        user: true
+                    select: {
+                        user: {
+                            select: {
+                                id: true,
+                                username: true,
+                                displayName: true
+                            }
+                        }
                     }
                 }
             }
         })
+        return conversations.map(conversation => ({
+            ...conversation,
+            users: conversation.users.map(user => user.user)
+        }))
     },
 
     async getById(id: string, ctx: Context) {
