@@ -29,3 +29,15 @@ test("should return all users", async () => {
 
     await expect(userQueries.getAll(ctx)).resolves.toEqual(users)
 })
+
+test("should create new user", async () => {
+    const user = {
+        createdAt: new Date,
+        displayName: "John",
+        id: "1",
+        username: "johndoe"
+    }
+    mockCtx.prisma.user.create.mockResolvedValue(user)
+
+    await expect(userQueries.create("johndoe", "John", ctx)).resolves.toEqual(user)
+})
