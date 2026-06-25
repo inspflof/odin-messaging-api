@@ -2,12 +2,12 @@ import type { Request, Response, NextFunction } from "express";
 import type { AddUserConversationBody, AddUserConversationParams, CreateConversationBody, CreateMessagesConversationBody, CreateMessagesConversationParams, GetByIdConversationParams, GetMessagesConversationParams, GetUserConversationParams, RemoveUserConversationBody, RemoveUserConversationParams } from "./conversation.type.js";
 
 import { conversationQueries } from "../services/db/conversation.js";
-
+import { ctx } from "../config/context.js";
 
 export const conversationController = {
     async getAll(_req: Request, res: Response, next: NextFunction) {
         try {
-            const data = await conversationQueries.getAll()
+            const data = await conversationQueries.getAll(ctx)
             return res.status(200).json(data)
         } catch (err) {
             return next(err)
@@ -24,7 +24,7 @@ export const conversationController = {
                 ? rawUserIds
                 : JSON.parse(rawUserIds)
 
-            const data = await conversationQueries.create(type, name, userIds)
+            const data = await conversationQueries.create(type, name, userIds, ctx)
             return res.status(200).json(data)
         } catch (err) {
             return next(err)
@@ -39,7 +39,7 @@ export const conversationController = {
                 return res.status(400).json({ message: "Missing fields" })
             }
 
-            const data = await conversationQueries.getById(conversationId)
+            const data = await conversationQueries.getById(conversationId, ctx)
             return res.status(200).json(data)
         } catch (err) {
             return next(err)
@@ -54,7 +54,7 @@ export const conversationController = {
                 return res.status(400).json({ message: "Missing fields" })
             }
 
-            const data = await conversationQueries.getUsers(conversationId)
+            const data = await conversationQueries.getUsers(conversationId, ctx)
             return res.status(200).json(data)
         } catch (err) {
             return next(err)
@@ -74,7 +74,7 @@ export const conversationController = {
                 return res.status(400).json({ message: "Missing fields" })
             }
 
-            const data = await conversationQueries.addUsers(userIds, conversationId)
+            const data = await conversationQueries.addUsers(userIds, conversationId, ctx)
             return res.status(200).json(data)
         } catch (err) {
             return next(err)
@@ -94,7 +94,7 @@ export const conversationController = {
                 return res.status(400).json({ message: "Missing fields" })
             }
 
-            const data = await conversationQueries.removeUsers(userIds, conversationId)
+            const data = await conversationQueries.removeUsers(userIds, conversationId, ctx)
             return res.status(200).json(data)
         } catch (err) {
             return next(err)
@@ -105,7 +105,7 @@ export const conversationController = {
         try {
             const { conversationId } = req.params 
 
-            const data = await conversationQueries.getMessages(conversationId)
+            const data = await conversationQueries.getMessages(conversationId, ctx)
             return res.status(200).json(data)
         } catch (err) {
             return next(err)
@@ -127,7 +127,7 @@ export const conversationController = {
                 return res.status(400).json({ message: "Missing fields" })
             }
             
-            const data = await conversationQueries.createMessages(conversationId, userId, contents)
+            const data = await conversationQueries.createMessages(conversationId, userId, contents, ctx)
             return res.status(200).json(data)
         } catch (err) {
             return next(err)

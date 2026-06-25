@@ -1,10 +1,10 @@
-import { prisma } from "../../config/prisma.js";
+import type { Context } from "../../config/context.js";
 
 import { ConversationType } from "../../generated/prisma/enums.js";
 
 export const conversationQueries = {
-    async getAll() {
-        return await prisma.conversation.findMany({
+    async getAll(ctx: Context) {
+        return await ctx.prisma.conversation.findMany({
             include: {
                 users: {
                     include: {
@@ -15,8 +15,8 @@ export const conversationQueries = {
         })
     },
 
-    async getById(id: string) {
-        return await prisma.conversation.findUnique({
+    async getById(id: string, ctx: Context) {
+        return await ctx.prisma.conversation.findUnique({
             where: { id },
             include: {
                 users: {
@@ -28,8 +28,8 @@ export const conversationQueries = {
         })
     },
 
-    async create(type: ConversationType = "DIRECT", name: string | null = null, userIds: string[]) {
-        return await prisma.$transaction(async (tx) => {
+    async create(type: ConversationType = "DIRECT", name: string | null = null, userIds: string[], ctx: Context) {
+        return await ctx.prisma.$transaction(async (tx) => {
             const conversation = await tx.conversation.create({
                 data : {
                     type,
@@ -47,8 +47,8 @@ export const conversationQueries = {
         })
     },
 
-    async addUsers(userIds: string[], conversationId: string) {
-        return await prisma.conversationUser.createMany({
+    async addUsers(userIds: string[], conversationId: string, ctx: Context) {
+        return await ctx.prisma.conversationUser.createMany({
             data: userIds.map(userId => ({
                 conversationId,
                 userId
@@ -57,8 +57,8 @@ export const conversationQueries = {
         })
     },
 
-    async removeUsers(userIds: string[], conversationId: string) {
-        return await prisma.conversationUser.deleteMany({
+    async removeUsers(userIds: string[], conversationId: string, ctx: Context) {
+        return await ctx.prisma.conversationUser.deleteMany({
             where: {
                 conversationId,
                 userId: {
@@ -68,8 +68,8 @@ export const conversationQueries = {
         })
     },
 
-    async getUsers(conversationId: string) {
-        const conversation = await prisma.conversation.findUnique({
+    async getUsers(conversationId: string, ctx: Context) {
+        const conversation = await ctx.prisma.conversation.findUnique({
             where: { id: conversationId},
             select: {
                 users: {
@@ -83,14 +83,14 @@ export const conversationQueries = {
         return conversation?.users.map(({ user }) => user)
     },
 
-    async getMessages(conversationId: string) {
-        return await prisma.message.findMany({
+    async getMessages(conversationId: string, ctx: Context) {
+        return await ctx.prisma.message.findMany({
             where: { conversationId }
         })
     },
 
-    async createMessages(conversationId: string, userId: string, contents: string[]) {
-        return await prisma.message.createMany({
+    async createMessages(conversationId: string, userId: string, contents: string[], ctx: Context) {
+        return await ctx.prisma.message.createMany({
             data: contents.map(content => ({
                 conversationId,
                 userId, 
