@@ -13,6 +13,7 @@ export const conversationQueries = {
                 type: true,
                 users: {
                     select: {
+                        lastReadMessageId: true,
                         user: {
                             select: {
                                 id: true,
@@ -26,7 +27,10 @@ export const conversationQueries = {
         })
         return conversations.map(conversation => ({
             ...conversation,
-            users: conversation.users.map(user => user.user)
+            users: conversation.users.map(user => ({
+                ...user.user,
+                lastReadMessageId: user.lastReadMessageId
+            }))
         }))
     },
 
