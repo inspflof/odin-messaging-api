@@ -28,6 +28,7 @@ const config: Config = {
   },
 
   collectCoverageFrom: [
+    "src/**",
     "!src/**/generated/**",
     "!src/**/*.mock.ts"
   ]
