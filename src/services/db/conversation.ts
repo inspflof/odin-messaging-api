@@ -116,13 +116,30 @@ export const conversationQueries = {
     },
 
     async removeUsers(userIds: string[], conversationId: string, ctx: Context) {
-        return await ctx.prisma.conversationUser.deleteMany({
-            where: {
-                conversationId,
-                userId: {
-                    in: userIds
+        return await ctx.prisma.$transaction(async (tx) => {
+            await tx.conversationUser.deleteMany({
+                where: {
+                    conversationId,
+                    userId: {
+                        in: userIds
+                    }
                 }
-            }
+            })
+
+            const users = await tx.conversationUser.findMany({
+                where: { conversationId },
+                select: {
+                    user: {
+                        select: {
+                            id: true,
+                            username: true,
+                            displayName: true
+                        }
+                    }
+                }
+            })
+
+            return users.map(user => user.user)
         })
     },
 
