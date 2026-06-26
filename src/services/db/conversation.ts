@@ -89,12 +89,29 @@ export const conversationQueries = {
     },
 
     async addUsers(userIds: string[], conversationId: string, ctx: Context) {
-        return await ctx.prisma.conversationUser.createMany({
-            data: userIds.map(userId => ({
-                conversationId,
-                userId
-            })),
-            skipDuplicates: true
+        return await ctx.prisma.$transaction(async (tx) => {
+            await tx.conversationUser.createMany({
+                data: userIds.map(userId => ({
+                    conversationId,
+                    userId
+                })),
+                skipDuplicates: true
+            })
+
+            const users = await tx.conversationUser.findMany({
+                where: { conversationId },
+                select: {
+                    user: {
+                        select: {
+                            id: true,
+                            username: true,
+                            displayName: true,
+                        }
+                    }
+                }
+            })
+
+            return users.map(user => user.user)
         })
     },
 
