@@ -31,16 +31,38 @@ export const conversationQueries = {
     },
 
     async getById(id: string, ctx: Context) {
-        return await ctx.prisma.conversation.findUnique({
+        const conversation = await ctx.prisma.conversation.findUnique({
             where: { id },
-            include: {
+            select: {
+                id: true,
+                createdAt: true,
+                updatedAt: true,
+                name: true,
+                type: true,
                 users: {
-                    include: {
-                        user: true
+                    select: {
+                        lastReadMessageId: true,
+                        user: {
+                            select: {
+                                id: true,
+                                username: true,
+                                displayName: true,
+                                createdAt: true,
+                            }
+                        }
                     }
                 }
             }
         })
+
+        return {
+            ...conversation,
+            users: conversation?.users.map(user => ({
+                ...user.user,
+                lastReadMessageId: user.lastReadMessageId
+            })
+            )
+        }
     },
 
     async create(type: ConversationType = "DIRECT", name: string | null = null, userIds: string[], ctx: Context) {
