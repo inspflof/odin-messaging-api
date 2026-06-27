@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import type { AddUserConversationBody, AddUserConversationParams, CreateConversationBody, CreateMessagesConversationBody, CreateMessagesConversationParams, GetByIdConversationParams, GetMessagesConversationParams, GetUserConversationParams, RemoveUserConversationBody, RemoveUserConversationParams } from "./conversation.type.js";
+import type { AddUserConversationBody, AddUserConversationParams, CreateConversationBody, GetByIdConversationParams, GetUserConversationParams, RemoveUserConversationBody, RemoveUserConversationParams } from "./conversation.type.js";
 
 import { conversationQueries } from "../services/db/conversation.js";
 import { ctx } from "../config/context.js";
@@ -100,37 +100,4 @@ export const conversationController = {
             return next(err)
         }
     },
-    
-    async getMessages(req: Request<GetMessagesConversationParams>, res: Response, next: NextFunction) {
-        try {
-            const { conversationId } = req.params 
-
-            const data = await conversationQueries.getMessages(conversationId, ctx)
-            return res.status(200).json(data)
-        } catch (err) {
-            return next(err)
-        }
-    }, 
-
-    async createMessages(req: Request<CreateMessagesConversationParams, {}, CreateMessagesConversationBody>, res: Response, next: NextFunction) {
-        try {
-            const { conversationId } = req.params 
-            const { userId } = req.body
-
-            const rawContents = req.body.contents
-
-            const contents = Array.isArray(rawContents)
-                ? rawContents
-                : JSON.parse(rawContents)
-
-            if(!conversationId || !userId || !rawContents) {
-                return res.status(400).json({ message: "Missing fields" })
-            }
-            
-            const data = await conversationQueries.createMessages(conversationId, userId, contents, ctx)
-            return res.status(200).json(data)
-        } catch (err) {
-            return next(err)
-        }
-    }, 
 }

@@ -1,6 +1,7 @@
 export const PATHS = {
     USER: "/user",
-    CONVERSATION: "/conversation"
+    CONVERSATION: "/conversation",
+    MESSAGE: "/conversation/:conversationId/message"
 }
 
 export const USER_PATHS = {
@@ -17,8 +18,11 @@ export const CONVERSATION_PATHS = {
         ADD: "/:conversationId/user",
         REMOVE: "/:conversationId/user",
     },
-    MESSAGES: {
-        GET: "/:conversationId/message",
-        CREATE: "/:conversationId/message"
-    }
+}
+
+export const MESSAGE_PATHS = {
+    GET: "/",
+    CREATE: "/",
+    GET_BY_ID: "/:messageId",
+    DELETE: "/:messageId",
 }
