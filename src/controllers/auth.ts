@@ -88,27 +88,11 @@ export const authController = {
 
     async me(req: Request, res: Response, next: NextFunction) {
         try {
-            const header = req.headers.authorization
-            if(!header) {
-                return res.status(401).json({ message: "Unauthorized"})
+            if (!req.user) {
+                return res.status(401).json({ message: "Unauthorized" });
             }
             
-            const [ type, token ] = header.split(" ")
-            if(!token || type !== "Bearer") {
-                return res.status(401).json({ message: "Unauthorized"})
-            }
-
-            const payload = jwt.verify(token, env.ACCESS_TOKEN_SECRET)
-
-            if(
-                typeof payload !== "object" ||
-                payload === null ||
-                !("id" in payload)
-            ) {
-                throw new jwt.JsonWebTokenError("Invalid token")
-            }
-
-            const { id } = payload as TokenPayload
+            const id = req.user.id
 
             const user = await userQueries.getById(id, ctx)
             
