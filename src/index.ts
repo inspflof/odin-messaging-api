@@ -1,5 +1,6 @@
 import express from "express"
 import routes from "./routes/index.js"
+import cookieParser from "cookie-parser"
 import { errorMiddleware } from "./middlewares/error.js"
 
 const port = Number(process.env["PORT"]) || 3000
@@ -8,6 +9,7 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.Router({ mergeParams: true }))
+app.use(cookieParser())
 
 app.use(routes)
 

@@ -3,6 +3,7 @@ type Env = {
     PORT: number;
     ACCESS_TOKEN_SECRET: string;
     REFRESH_TOKEN_SECRET: string;
+    NODE_ENV: string;
 }
 
 function requireEnv(name: string): string {
@@ -18,4 +19,5 @@ export const env: Env = {
     PORT: Number(requireEnv("PORT")),
     ACCESS_TOKEN_SECRET: requireEnv("ACCESS_TOKEN_SECRET"),
     REFRESH_TOKEN_SECRET: requireEnv("REFRESH_TOKEN_SECRET"),
+    NODE_ENV: requireEnv("NODE_ENV")
 }

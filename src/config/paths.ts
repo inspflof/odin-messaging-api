@@ -1,5 +1,6 @@
 export const PATHS = {
     USER: "/user",
+    AUTH: "/auth",
     CONVERSATION: "/conversation",
     MESSAGE: "/conversation/:conversationId/message"
 }
@@ -25,4 +26,11 @@ export const MESSAGE_PATHS = {
     CREATE: "/",
     GET_BY_ID: "/:messageId",
     DELETE: "/:messageId",
+}
+
+export const AUTH_PATHS = {
+    LOGIN: "/",
+    LOGOUT: "/logout",
+    REFRESH: "/refresh",
+    ME: "/me"
 }
