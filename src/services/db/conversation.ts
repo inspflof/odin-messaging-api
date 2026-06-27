@@ -157,4 +157,10 @@ export const conversationQueries = {
 
         return conversation?.users.map(({ user }) => user)
     },
+
+    async checkUser(conversationId: string, userId: string, ctx: Context) {
+        return await ctx.prisma.conversationUser.findFirst({
+            where: { conversationId, userId }
+        })
+    }
 }

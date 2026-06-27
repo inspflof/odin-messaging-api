@@ -4,7 +4,7 @@ import type { CreateMessagesBody, CreateMessagesParams, GetMessagesParams } from
 import { ctx } from "../config/context.js"
 
 export const messageController = {
-        async getMessages(req: Request<GetMessagesParams>, res: Response, next: NextFunction) {
+    async getMessages(req: Request<GetMessagesParams>, res: Response, next: NextFunction) {
         try {
             const { conversationId } = req.params 
 
@@ -17,8 +17,13 @@ export const messageController = {
 
     async createMessages(req: Request<CreateMessagesParams, {}, CreateMessagesBody>, res: Response, next: NextFunction) {
         try {
-            const { conversationId } = req.params 
-            const { userId } = req.body
+            if (!req.user) {
+                return res.status(401).json({ message: "Unauthorized" });
+            }
+
+            const userId = req.user.id
+
+            const { conversationId } = req.params
 
             const rawContents = req.body.contents
 
