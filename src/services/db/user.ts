@@ -5,12 +5,25 @@ export const userQueries = {
         return await ctx.prisma.user.findMany()
     },
     
-    async create(username: string, displayName: string, ctx: Context) {
+    async create(username: string, displayName: string, password: string, ctx: Context) {
         return await ctx.prisma.user.create({
             data: {
                 username,
-                displayName
+                displayName,
+                password
             }
+        })
+    },
+
+    async getByUsername(username: string, ctx: Context) {
+        return await ctx.prisma.user.findUnique({
+            where: { username }
+        })
+    },
+
+    async getById(id: string, ctx: Context) {
+        return await ctx.prisma.user.findUnique({
+            where: { id }
         })
     }
 }

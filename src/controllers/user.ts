@@ -16,13 +16,13 @@ export const userController = {
 
     async create(req: Request<{}, {}, CreateUserBody>, res: Response, next: NextFunction) {
         try {
-            const { displayName, username } = req.body
+            const { displayName, username, password } = req.body
 
-            if(!displayName || !username) {
+            if(!displayName || !username || !password) {
                 return res.status(400).json({ message: "Missing fields" });
             }
 
-            const data = await userQueries.create(username, displayName, ctx)
+            const data = await userQueries.create(username, displayName, password, ctx)
             return res.status(201).json(data)
         } catch (err) {
             return next(err)
