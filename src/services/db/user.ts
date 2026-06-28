@@ -2,7 +2,14 @@ import type { Context } from "../../config/context.js";
 
 export const userQueries = {
     async getAll(ctx: Context) {
-        return await ctx.prisma.user.findMany()
+        return await ctx.prisma.user.findMany({
+            select: {
+                id: true,
+                username: true,
+                displayName: true,
+                createdAt: true,
+            }
+        })
     },
     
     async create(username: string, displayName: string, password: string, ctx: Context) {
@@ -23,7 +30,13 @@ export const userQueries = {
 
     async getById(id: string, ctx: Context) {
         return await ctx.prisma.user.findUnique({
-            where: { id }
+            where: { id },
+            select: {
+                id: true,
+                username: true,
+                displayName: true,
+                createdAt: true,
+            }
         })
     }
 }
