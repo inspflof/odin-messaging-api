@@ -7,7 +7,8 @@ export const PATHS = {
 
 export const USER_PATHS = {
     GET_ALL: "/",
-    CREATE: "/"
+    CREATE: "/",
+    EDIT: "/"
 }
 
 export const CONVERSATION_PATHS = {

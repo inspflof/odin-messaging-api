@@ -3,3 +3,8 @@ export type CreateUserBody = {
     displayName: string;
     password: string;
 }
+
+export type EditUserBody = {
+    username: string;
+    displayName: string;
+}

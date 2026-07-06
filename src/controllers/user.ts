@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import type { CreateUserBody } from "./user.type.js";
+import type { CreateUserBody, EditUserBody } from "./user.type.js";
 
 import { userQueries } from "../services/db/user.js";
 import { ctx } from "../config/context.js";
@@ -28,4 +28,24 @@ export const userController = {
             return next(err)
         }
     }, 
+
+    async edit(req: Request<{}, {}, EditUserBody>, res: Response, next: NextFunction) {
+        try {
+            if (!req.user) {
+                return res.status(401).json({ message: "Unauthorized" });
+            }
+
+            const userId = req.user.id
+
+            const { displayName, username } = req.body
+
+            const data = await userQueries.edit(userId, {
+                displayName,
+                username
+            }, ctx)
+            return res.status(201).json(data)
+        } catch (err) {
+            return next(err)
+        }
+    }
 }

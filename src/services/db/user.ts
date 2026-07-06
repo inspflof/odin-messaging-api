@@ -1,4 +1,5 @@
 import type { Context } from "../../config/context.js";
+import type { UserEditBody } from "../../types/user.js";
 
 export const userQueries = {
     async getAll(ctx: Context) {
@@ -31,6 +32,24 @@ export const userQueries = {
     async getById(id: string, ctx: Context) {
         return await ctx.prisma.user.findUnique({
             where: { id },
+            select: {
+                id: true,
+                username: true,
+                displayName: true,
+                createdAt: true,
+            }
+        })
+    },
+    
+    async edit(id: string, rawData: UserEditBody, ctx: Context) {
+        console.log(rawData)
+        const data = Object.fromEntries(
+            Object.entries(rawData).filter(([_, value]) => value !== undefined)
+        )
+
+        return await ctx.prisma.user.update({
+            where: {id},
+            data,
             select: {
                 id: true,
                 username: true,
