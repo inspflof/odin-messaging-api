@@ -3,8 +3,13 @@ import type { Context } from "../../config/context.js";
 import { ConversationType } from "../../generated/prisma/enums.js";
 
 export const conversationQueries = {
-    async getAll(ctx: Context) {
+    async getAll(userId: string ,ctx: Context) {
         const conversations = await ctx.prisma.conversation.findMany({
+            where: { users: {
+                some: {
+                    userId
+                }
+            } },
             select: {
                 id: true,
                 createdAt: true,
@@ -12,6 +17,11 @@ export const conversationQueries = {
                 name: true,
                 type: true,
                 users: {
+                    where: {
+                        NOT: {
+                            userId
+                        }
+                    },
                     select: {
                         lastReadMessageId: true,
                         user: {
@@ -162,5 +172,5 @@ export const conversationQueries = {
         return await ctx.prisma.conversationUser.findFirst({
             where: { conversationId, userId }
         })
-    }
+    },
 }

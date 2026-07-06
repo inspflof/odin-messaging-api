@@ -5,9 +5,15 @@ import { conversationQueries } from "../services/db/conversation.js";
 import { ctx } from "../config/context.js";
 
 export const conversationController = {
-    async getAll(_req: Request, res: Response, next: NextFunction) {
+    async getAll(req: Request, res: Response, next: NextFunction) {
         try {
-            const data = await conversationQueries.getAll(ctx)
+            if (!req.user) {
+                return res.status(401).json({ message: "Unauthorized" });
+            }
+
+            const userId = req.user.id
+
+            const data = await conversationQueries.getAll(userId, ctx)
             return res.status(200).json(data)
         } catch (err) {
             return next(err)
