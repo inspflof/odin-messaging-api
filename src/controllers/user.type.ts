@@ -8,3 +8,7 @@ export type EditUserBody = {
     username: string;
     displayName: string;
 }
+
+export type SearchUserQuery = {
+    username: string;
+}

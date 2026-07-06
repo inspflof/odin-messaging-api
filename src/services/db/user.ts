@@ -57,5 +57,32 @@ export const userQueries = {
                 createdAt: true,
             }
         })
+    },
+
+    async search(name: string, ctx: Context) {
+        return await ctx.prisma.user.findMany({
+            where: {
+                OR: [
+                    {
+                        username: {
+                            contains: name,
+                            mode: "insensitive"
+                        }
+                    },
+                    {
+                        displayName: {
+                            contains: name,
+                            mode: "insensitive"
+                        }
+                    }
+                ]
+            },
+            select: {
+                id: true,
+                username: true,
+                displayName: true,
+                createdAt: true
+            }
+        })
     }
 }

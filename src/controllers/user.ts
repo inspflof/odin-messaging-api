@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import type { CreateUserBody, EditUserBody } from "./user.type.js";
+import type { CreateUserBody, EditUserBody, SearchUserQuery } from "./user.type.js";
 
 import { userQueries } from "../services/db/user.js";
 import { ctx } from "../config/context.js";
@@ -45,6 +45,18 @@ export const userController = {
             }, ctx)
             return res.status(201).json(data)
         } catch (err) {
+            return next(err)
+        }
+    },
+
+    async search(req: Request<{}, {}, {}, SearchUserQuery>, res: Response, next: NextFunction) {
+        try {
+            const username = String(req.query.username ?? "").trim()
+
+            const data = await userQueries.search(username, ctx)
+
+            return res.status(200).json(data)
+        } catch(err) {
             return next(err)
         }
     }
