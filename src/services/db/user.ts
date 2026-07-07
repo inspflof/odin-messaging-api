@@ -19,6 +19,12 @@ export const userQueries = {
                 username,
                 displayName,
                 password
+            },
+            select: {
+                id: true,
+                username: true,
+                displayName: true,
+                createdAt: true,
             }
         })
     },

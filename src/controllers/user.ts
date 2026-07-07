@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import type { CreateUserBody, EditUserBody, SearchUserQuery } from "./user.type.js";
+import bcrypt from "bcrypt"
 
 import { userQueries } from "../services/db/user.js";
 import { ctx } from "../config/context.js";
@@ -22,7 +23,9 @@ export const userController = {
                 return res.status(400).json({ message: "Missing fields" });
             }
 
-            const data = await userQueries.create(username, displayName, password, ctx)
+            const hashedPassword = await bcrypt.hashSync(password, 10)
+
+            const data = await userQueries.create(username, displayName, hashedPassword, ctx)
             return res.status(201).json(data)
         } catch (err) {
             return next(err)
