@@ -1,6 +1,7 @@
 import type { Server } from "socket.io";
 import { verify } from "../../utils/jwt.js";
 import type { TokenPayload } from "../../controllers/auth.type.js";
+import jwt from "jsonwebtoken"
 
 type Middleware = Parameters<Server["use"]>[0]
 
@@ -18,6 +19,10 @@ export const socketAuth: Middleware = (socket, next) => {
     } catch (err) {
         if(!(err instanceof Error)) {
             return next(new Error("Unknown error"))
+        }
+
+        if(err instanceof jwt.TokenExpiredError) {
+            return next(new Error("TokenExpired"))
         }
         
         if(err.message === "Invalid token") {
