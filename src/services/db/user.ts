@@ -48,7 +48,6 @@ export const userQueries = {
     },
     
     async edit(id: string, rawData: UserEditBody, ctx: Context) {
-        console.log(rawData)
         const data = Object.fromEntries(
             Object.entries(rawData).filter(([_, value]) => value !== undefined)
         )

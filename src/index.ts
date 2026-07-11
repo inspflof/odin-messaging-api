@@ -6,6 +6,7 @@ import cors, { type CorsOptions } from "cors"
 import { createServer } from "http"
 import { Server } from "socket.io"
 import { chatHandlers } from "./sockets/chat.handler.js"
+import { socketAuth } from "./middlewares/socket/auth.js"
 
 const port = Number(process.env["PORT"]) || 3000
 const app = express()
@@ -28,14 +29,10 @@ export const io = new Server(httpServer, {
     cors: corsOptions
 })
 
+io.use(socketAuth)
+
 io.on("connection", (socket) => {
-    console.log(`Utilisateur connecté : ${socket.id}`)
-
     chatHandlers(io, socket)
-
-    socket.on("disconnect", () => {
-        console.log("Utilisateur déconnecté")
-    })
 })
 
 app.use(cors(corsOptions))
