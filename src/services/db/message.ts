@@ -8,7 +8,7 @@ export const messageQueries = {
     },
 
     async createMessages(conversationId: string, userId: string, contents: string[], ctx: Context) {
-        return await ctx.prisma.message.createMany({
+        return await ctx.prisma.message.createManyAndReturn({
             data: contents.map(content => ({
                 conversationId,
                 userId, 
